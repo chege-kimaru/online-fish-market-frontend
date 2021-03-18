@@ -1,0 +1,53 @@
+<!--banner-->
+<div class="banner-top">
+    <div class="container">
+        <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Shops near me</h2>
+        <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="/">Home</a><label>/</label>Shops near me
+        </h3>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<div style="width: 100%; height: 80vh" id="map"></div>
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-izJWjjI0o3W2b7CG2QjpBVq4nrQ_IMI&amp;libraries=places"></script>
+<script>
+    navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+
+        // Coordinates to center the map
+        const myLatlng = new google.maps.LatLng(latitude, longitude);
+
+        // Other options for the map, pretty much selfexplanatory
+        const mapOptions = {
+            zoom: 14,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        // Attach a map to the DOM Element, with the defined settings
+        const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        (async () => {
+            try {
+                const res = await axios.get('shops');
+                const shops = res.data;
+
+                for (const shop of shops) {
+                    const marker = new google.maps.Marker({
+                        title: shop.name,
+                        map: map,
+                        position: new google.maps.LatLng(shop.latitude, shop.longitude)
+                    });
+                    marker.addListener("click", () => {
+                        location.href = `products?shopId=${shop.id}`
+                    });
+                }
+            } catch (e) {
+                alert('Could not retrieve shops');
+                console.error(e);
+            }
+        })();
+    })
+
+</script>

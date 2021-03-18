@@ -1,0 +1,71 @@
+<!--banner-->
+<div class="banner-top">
+    <div class="container">
+        <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Register</h2>
+        <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="/">Home</a><label>/</label>Register
+        </h3>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<!-- contact -->
+<div class="login">
+    <div class="container">
+        <form id="form">
+            <div class="col-md-6 login-do1 animated wow fadeInLeft" data-wow-delay=".5s">
+                <div class="login-mail">
+                    <input type="email" name="email" placeholder="Email" required="">
+                    <i class="glyphicon glyphicon-envelope"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="text" name="name" placeholder="Name" required="">
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="text" name="phone" placeholder="Phone" required="">
+                    <i class="glyphicon glyphicon-phone"></i>
+                </div>
+                <div class="login-mail">
+                    <input id="password" type="password" name="password" placeholder="Password" required="">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </div>
+                <div class="login-mail">
+                    <input id="c-password" type="password" name="c-password" placeholder="Repeated password"
+                        required="">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </div>
+
+            </div>
+            <div class="col-md-6 login-do animated wow fadeInRight" data-wow-delay=".5s">
+                <label class="hvr-sweep-to-top login-sub">
+                    <input type="submit" value="Submit">
+                </label>
+                <p>Already register</p>
+                <a href="/login" class="hvr-sweep-to-top">Login</a>
+            </div>
+            <div class="clearfix"> </div>
+        </form>
+    </div>
+
+
+</div>
+
+<script>
+    $('#form').submit(async e => {
+        e.preventDefault();
+
+        if ($('#password').val() !== $('#c-password').val()) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        try {
+            const data = Object.fromEntries(new FormData($('#form')[0]));
+            const res = await axios.post('auth/register', data);
+            alert('Registration successful. Please login to continue to Online Fish Market Platform');
+            location.href = 'login';
+        } catch (e) {
+            console.error(e);
+            alert('Could not complete transaction. PLease try again');
+        }
+    });
+</script>

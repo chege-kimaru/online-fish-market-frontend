@@ -1,0 +1,77 @@
+<!--banner-->
+<div class="banner-top">
+    <div class="container">
+        <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Add Shop</h2>
+        <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="/">Home</a><label>/</label>Add Shop
+        </h3>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+
+<div class="login">
+    <div class="container">
+        <form id="form">
+            <div class="col-md-12 login-do1 animated wow fadeInLeft" data-wow-delay=".5s">
+                <div class="login-mail">
+                    <input type="text" name="name" placeholder="Name" required="">
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="text" name="description" placeholder="Description" required="">
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="text" name="county" placeholder="County" required="">
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="login-mail">
+                    <input id="location" type="text" name="location" placeholder="Location" required="">
+                    <input id="latitude" type="hidden" name="latitude" required="">
+                    <input id="longitude" type="hidden" name="longitude" required="">
+                    <i class="glyphicon glyphicon-map-marker"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="file" placeholder="Image" name="image" required="">
+                </div>
+
+            </div>
+            <div class="col-md-12 login-do animated wow fadeInRight" data-wow-delay=".5s">
+                <label class="hvr-sweep-to-top login-sub">
+                    <input type="submit" value="Add Shop">
+                </label>
+            </div>
+
+            <div class="clearfix"> </div>
+        </form>
+
+    </div>
+</div>
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-izJWjjI0o3W2b7CG2QjpBVq4nrQ_IMI&amp;libraries=places"></script>
+<script>
+    (() => {
+        let input = document.getElementById('location');
+        let autocomplete = new google.maps.places.Autocomplete(input);
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            let place = autocomplete.getPlace();
+            //document.getElementById('location').value = place && place.name;
+            document.getElementById('latitude').value = place && place.geometry.location.lat();
+            document.getElementById('longitude').value = place && place.geometry.location.lng();
+        });
+    })();
+
+    $('#form').submit(async e => {
+        e.preventDefault();
+
+        try {
+            const data = new FormData($('#form')[0]);
+            const res = await axios.post('shops', data);
+            alert('Successfully created shop.');
+            location.href = 'my-shops';
+        } catch (e) {
+            console.error(e);
+            alert('Could not complete transaction. Please try again');
+        }
+    });
+</script>

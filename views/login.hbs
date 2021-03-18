@@ -1,0 +1,53 @@
+<!--banner-->
+<div class="banner-top">
+    <div class="container">
+        <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Login</h2>
+        <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="/">Home</a><label>/</label>Login
+        </h3>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<!-- contact -->
+<div class="login">
+    <div class="container">
+        <form id="form">
+            <div class="col-md-6 login-do1 animated wow fadeInLeft" data-wow-delay=".5s">
+                <div class="login-mail">
+                    <input type="email" name="email" placeholder="Email" required="">
+                    <i class="glyphicon glyphicon-envelope"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="password" name="password" placeholder="Password" required="">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </div>
+            </div>
+            <div class="col-md-6 login-do animated wow fadeInRight" data-wow-delay=".5s">
+                <label class="hvr-sweep-to-top login-sub">
+                    <input type="submit" value="login">
+                </label>
+                <p>Do not have an account?</p>
+                <a href="/register" class="hvr-sweep-to-top">Signup</a>
+            </div>
+
+            <div class="clearfix"> </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    $('#form').submit(async e => {
+        e.preventDefault();
+
+        try {
+            const data = Object.fromEntries(new FormData($('#form')[0]));
+            const res = await axios.post('auth/login', data);
+            localStorage.setItem('JWT', res.data.jwt);
+            alert('You have logged in successfully. Welcome back to Online Fish Market');
+            location.href = '/';
+        } catch (e) {
+            console.error(e);
+            alert('Could not complete transaction. Please try again');
+        }
+    });
+</script>

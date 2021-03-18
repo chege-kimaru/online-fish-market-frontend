@@ -1,0 +1,61 @@
+<!--banner-->
+<div class="banner-top">
+    <div class="container">
+        <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Add Product</h2>
+        <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="/">Home</a><label>/</label>Add Product
+        </h3>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+
+<div class="login">
+    <div class="container">
+        <form id="form">
+            <div class="col-md-12 login-do1 animated wow fadeInLeft" data-wow-delay=".5s">
+                <div class="login-mail">
+                    <input type="text" name="name" placeholder="Name" required="">
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="text" name="description" placeholder="Description" required="" />
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="number" name="price" placeholder="Price per Kg" required="">
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="login-mail">
+                    <input type="file" name="image" placeholder="Image" required="">
+                </div>
+
+            </div>
+            <div class="col-md-12 login-do animated wow fadeInRight" data-wow-delay=".5s">
+                <label class="hvr-sweep-to-top login-sub">
+                    <input type="submit" value="Add Product">
+                </label>
+            </div>
+
+            <div class="clearfix"> </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const shopId = urlParams.get("shopId");
+
+    $('#form').submit(async e => {
+        e.preventDefault();
+
+        try {
+            const data = new FormData($('#form')[0]);
+            const res = await axios.post(`shops/${shopId}/products`, data);
+            alert('Successfully added product.');
+            location.href = `products?shopId=${shopId}`;
+        } catch (e) {
+            console.error(e);
+            alert('Could not complete transaction. Please try again');
+        }
+    });
+</script>

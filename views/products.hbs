@@ -1,0 +1,79 @@
+<!--banner-->
+<div class="banner-top">
+    <div class="container">
+        <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Shop Products</h2>
+        <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a
+                href="/">Home</a><label>/</label>Shop<label>/</label>Shop Products</h3>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+
+<!--content-->
+<div class="product">
+    <div class="container">
+
+        <div class="col-md-12 animated wow fadeInRight" data-wow-delay=".5s">
+
+            <div class="mid-popular" id="products-container">
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+
+    </div class="clearfix">
+</div>
+<!--//products-->
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const shopId = urlParams.get("shopId");
+
+    $(document).ready(() => {
+        getProducts();
+    });
+
+    const productTemplate = (product) => {
+        return `
+            <div class="col-sm-4 item-grid item-gr  simpleCart_shelfItem">
+                <div class="grid-pro">
+                    <div class=" grid-product" style="width: 100%">
+                        <figure>
+                            <a href="product-details?productId=${product.id}&shopId=${shopId}">
+                                <div class="grid-img">
+                                    <img src="${product.imageUrl}" class="img-responsive" alt="">
+                                </div>
+                                <div class="grid-img">
+                                    <img src="${product.imageUrl}" class="img-responsive" alt="">
+                                </div>
+                            </a>
+                        </figure>
+                    </div>
+                    <div class="women">
+                        <a href="#"><img src="images/ll.png" alt=""></a>
+                        <h6><a href="/product-details?productId=${product.id}&shopId=${shopId}">${product.name}</a></h6>
+                        <h6><a href="/product-details?productId=${product.id}&shopId=${shopId}">${product.description}</a></h6>
+                        <p><em class="item_price">KES ${product.price}</em></p>
+                        <div onclick="addToCart('${product.shopId}', '${product.id}', '${product.price}', '${product.name}', '${product.imageUrl}')" 
+                        data-text="Add To Cart" class="but-hover1 item_add">Add To Cart</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    };
+
+    const getProducts = async () => {
+        try {
+            const res = await axios.get(`shops/${shopId}/products`);
+            const products = res.data;
+
+            const productsContainer = $("#products-container");
+            products.forEach((product) => {
+                productsContainer.prepend(productTemplate(product));
+            });
+        } catch (e) {
+            console.error(e);
+            alert("Could not get data.");
+        }
+    };
+
+</script>
